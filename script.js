@@ -125,35 +125,57 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Form Submission
-document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+// document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
+//     e.preventDefault();
     
-    // Get form data
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
+//     // Get form data
+//     const formData = new FormData(this);
+//     const data = Object.fromEntries(formData);
     
-    // Simple validation
-    if (!data.parentName || !data.email || !data.phone || !data.childName || !data.childAge) {
-        alert('Please fill in all required fields.');
-        return;
+//     // Simple validation
+//     if (!data.parentName || !data.email || !data.phone || !data.childName || !data.childAge) {
+//         alert('Please fill in all required fields.');
+//         return;
+//     }
+    
+//     // Email validation
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(data.email)) {
+//         alert('Please enter a valid email address.');
+//         return;
+//     }
+    
+//     // Show success message
+// alert(`Thank you, ${data.parentName}! We've received your enrollment inquiry for ${data.childName}. We'll contact you soon at ${data.email}.`);
+    
+//     // Reset form
+//     this.reset();
+    
+//     // In a real application, you would send this data to a server
+//     console.log('Form submitted with data:', data);
+// });
+
+document.getElementById('enrollmentForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const formData = new FormData(form);
+  const response = await fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Accept: 'application/json'
     }
-    
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-    
-    // Show success message
-alert(`Thank you, ${data.parentName}! We've received your enrollment inquiry for ${data.childName}. We'll contact you soon at ${data.email}.`);
-    
-    // Reset form
-    this.reset();
-    
-    // In a real application, you would send this data to a server
-    console.log('Form submitted with data:', data);
+  });
+
+  if (response.ok) {
+    alert('Thank you! Your Request has been sent.');
+    form.reset();
+  } else {
+    alert('Oops! Something went wrong. Try again later.');
+  }
 });
+
 
 // Add floating animation to hero elements
 document.addEventListener('DOMContentLoaded', () => {
